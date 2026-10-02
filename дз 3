@@ -1,0 +1,164 @@
+#--------------------------------УРОК 3----------------------------------------------------------------------------------
+
+# Упражнение 1
+'''def fibonacci(N, cache = {0:0, 1:1}):
+    if N in cache:
+        return cache[N]
+    else:
+        cache[N] = fibonacci(N-1, cache) + fibonacci(N-2, cache)
+        return cache[N]
+print(fibonacci(100))'''
+
+'''def fibonacci(N):
+    if N <= 1:
+        return N
+    a = 1
+    b = 0
+    for i in range(N-1):
+        a,b = a+b, a
+    return a'''
+
+'''def fib(N):
+    res = [0]*N
+    res[1] = 1
+    for i in range(2, N):
+        res[i] = res[i-2] + res[i-1]
+    return res[N-1]
+print(fib(7))'''
+
+# Упражнение 2
+'''a = 10
+def pr_mn(n, i = 2):
+    while(i*i <= n):
+        if n%i:
+            i += 1
+        else:
+            return [i] + pr_mn(n//i,i)
+    return [n]'''
+
+# Упражнение 3
+
+'''def gcd(a, b):
+    if a == 0:
+        return 0, 1, b
+    x1, y1, d = gcd(b % a, a)
+    x = y1 - (b // a) * x1
+    y = x1
+    return x, y, d
+
+def solve(a, b):
+    x, y, d = gcd(a, b)
+    dx = b // d
+    dy = a // d
+    best_x = x
+    best_y = y
+    min_sum = abs(x) + abs(y)
+
+    for k in range(-100, 101):
+        nx = x + k * dx
+        ny = y - k * dy
+        s = abs(nx) + abs(ny)
+        if s < min_sum:
+            min_sum = s
+            best_x = nx
+            best_y = ny
+        elif s == min_sum and nx < best_x:
+            best_x = nx
+            best_y = ny
+
+    return best_x, best_y, d
+while True:
+    try:
+        line = input()
+        if not line:
+            break
+        a, b = map(int, line.split())
+        res_x, res_y, res_d = solve(a, b)
+        print(f"{res_x} {res_y} {res_d}")
+    except EOFError:
+        break'''
+
+# Упражнение 4
+'''def tr(size, symb):
+    if size % 2 == 1:
+        for i in range(size//2+1):
+            print((i+1)*symb)
+        for i in range(size):
+            print((size//2 - i)*symb)
+    else:
+        for i in range(size//2):
+            print((i+1)*symb)
+        for i in range(size):
+            print((size//2 - i)*symb)
+tr(4,'W')'''
+
+import numpy as np
+
+# Упражнение 5
+'''def spiral_matrix(N,M):
+    left, right, bottom, top = 0,M,N,0
+    res = np.zeros((N,M))
+    num = 1
+    while left < right and top < bottom:
+        res[top,left:right] = np.arange(num,num + right - left)
+        top += 1
+        num += right - left
+        if top < bottom:
+            res[top: bottom, right - 1] = np.arange(num, num + bottom - top)
+            right -= 1
+            num += bottom - top
+        else:
+            break
+        if left < right:
+            res[bottom - 1, left: right][::-1] = np.arange(num, num + right - left)
+            bottom -= 1
+            num += right - left
+        else:
+            break
+        if top < bottom:
+            res[top: bottom, left][::-1] = np.arange(num, num + bottom - top)
+            left += 1
+            num += bottom - top
+        else:
+            break
+
+    return res
+print(spiral_matrix(40,4))'''
+
+# Упражнение 6
+'''x = np.array([1, 2, 3, 4, 5, 6])
+y = np.array([4, 6, 7, 4, 3, 0])
+xy = 0
+for i in range(len(x)):
+    xy += x[i]*y[i]
+
+cr_xy = xy/len(x)
+
+cr_x = sum(x)/len(x)
+cr_y = sum(y)/len(y)
+cr_x2 = sum([i**2 for i in x])/len(x)
+
+a = (cr_xy - cr_x*cr_y)/(cr_x2 - cr_x**2)
+b = cr_y - a*cr_x
+print(a,b)'''
+
+# Упражнение 7
+import numpy as np
+def solve():
+    n, m = map(int, input().split())
+    data = []
+    for _ in range(n):
+        row = list(map(float, input().split()))
+        data.append(row)
+
+    mat = np.array(data)
+    A = mat[:, :-1]
+    b = mat[:, -1]
+    try:
+        ans = np.linalg.solve(A, b)
+    except:
+        ans = np.linalg.lstsq(A, b, rcond=None)[0]
+    return ans
+
+
+print(solve())
